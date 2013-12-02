@@ -3,9 +3,11 @@ var _scripts,
     _elemArray = [],
     _httpRegex = /^(http\:\/\/|https\:\/\/)/;
 
+/*
 function toggle( bool ){
   return bool ? false : true;
 }
+*/
 
 function initSwitch() {
   var lis = getElem('libraryList').children;
@@ -47,10 +49,8 @@ function getUIDList(scriptInfo) {
 }
 
 function checkLibraryList() {
-  var returnArray = [],
-      i = 0,
-      l = _elemArray.length;
-  for (; i < l; i++ ){
+  var returnArray = [];
+  for (var i = 0, l = _elemArray.length; i < l; i++ ){
     if(_elemArray[i].status) returnArray.push(_elemArray[i].dataset.uid);
   }
   return returnArray;
@@ -84,7 +84,6 @@ function updateScriptList(data) {
   autoSwitchUpdate();
 }
 
-
 function handleEvent(e) {
   slideSwitch(this);
   var selected = e.currentTarget.dataset.uid;
@@ -92,11 +91,13 @@ function handleEvent(e) {
   if(autoSwitch.status) callBackground(scriptInfo);
 }
 
-
 function slideSwitch( element ){
   element.slider = element.slider || getElem('p', element)[0];
   element.checkbox = element.checkbox || getElem('p', element)[1];
-  if (element.status = toggle(element.status)){
+  //if (element.status = toggle(element.status)){
+  // 어떤 값이 들어오던 강제로 Boolean 값으로 형변환 후
+  // NOT 연산으로 toggle 함수를 대체함.
+  if (element.status = !(!!element.status)) {
     element.slider.classList.add('selected');
     if(element.checkbox){
       element.checkbox.className = 'icon-checkedbox listCheckboxes';
@@ -105,7 +106,6 @@ function slideSwitch( element ){
       editBox.style.display = 'none';
       autoSwitchUpdate();
     }
-    return true;
   }else{
     element.slider.classList.remove('selected');
     if(element.checkbox){
@@ -113,8 +113,8 @@ function slideSwitch( element ){
     }else{
       autoSwitchUpdate();
     }
-    return false;
   }
+  return element.status
 }
 
 function autoSwitchOFF(){
@@ -123,20 +123,17 @@ function autoSwitchOFF(){
 }
 
 function autoSwitchUpdate(){
-  var i = 0,
-      l = _elemArray.length;
-  for(; i < l; ++i){
+  for(var i = 0, l = _elemArray.length; i < l; ++i){
     var elem = _elemArray[i];
-    if(autoSwitch.status){
+    if(autoSwitch.status) {
       elem.checkbox.style.display = 'none';
       elem.slider.style.display = 'inline-block';
-    }else{
+    } else {
       elem.slider.style.display = 'none';
       elem.checkbox.style.display = 'inline-block';
     }
   }
 }
-
 
 function handleResponse(res) {
   console.log('received : ' + res.type);
