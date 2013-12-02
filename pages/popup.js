@@ -47,10 +47,8 @@ function getUIDList(scriptInfo) {
 }
 
 function checkLibraryList() {
-  var returnArray = [],
-      i = 0,
-      l = _elemArray.length;
-  for (; i < l; i++ ){
+  var returnArray = [];
+  for (var i = 0, l = _elemArray.length; i < l; i++ ){
     if(_elemArray[i].status) returnArray.push(_elemArray[i].dataset.uid);
   }
   return returnArray;
@@ -84,14 +82,12 @@ function updateScriptList(data) {
   autoSwitchUpdate();
 }
 
-
 function handleEvent(e) {
   slideSwitch(this);
   var selected = e.currentTarget.dataset.uid;
   var scriptInfo = checkLibraryList();
   if(autoSwitch.status) callBackground(scriptInfo);
 }
-
 
 function slideSwitch( element ){
   element.slider = element.slider || getElem('p', element)[0];
@@ -123,9 +119,7 @@ function autoSwitchOFF(){
 }
 
 function autoSwitchUpdate(){
-  var i = 0,
-      l = _elemArray.length;
-  for(; i < l; ++i){
+  for(var i = 0, l = _elemArray.length; i < l; ++i){
     var elem = _elemArray[i];
     if(autoSwitch.status){
       elem.checkbox.style.display = 'none';
@@ -136,7 +130,6 @@ function autoSwitchUpdate(){
     }
   }
 }
-
 
 function handleResponse(res) {
   console.log('received : ' + res.type);
